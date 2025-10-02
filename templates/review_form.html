@@ -1,11 +1,29 @@
+{# templates/review_form.html #}
 {% extends "base.html" %}
 {% load humanize %}
+{% block title %}Write review - {{ app.name }}{% endblock %}
+
 {% block content %}
-<h2>Write review for {{ app.name }}</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-primary" type="submit">Submit</button>
-  <a class="btn btn-secondary" href="{% url 'reviews:app_detail' app.pk %}">Cancel</a>
-</form>
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2 class="mb-3">Write review for {{ app.name }}</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        {{ form.text.label_tag }}
+        {{ form.text }}
+        {% if form.text.errors %}
+          <div class="invalid-feedback d-block">{{ form.text.errors.as_text }}</div>
+        {% endif %}
+      </div>
+
+      <button class="btn btn-primary" type="submit">Submit for approval</button>
+      <a class="btn btn-secondary" href="{% url 'reviews:app_detail' app.pk %}">Cancel</a>
+    </form>
+
+    <small class="text-muted d-block mt-3">
+      Your review will be sent to a supervisor for approval before it appears on the app page.
+    </small>
+  </div>
+</div>
 {% endblock %}

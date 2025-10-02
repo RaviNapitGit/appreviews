@@ -2,20 +2,25 @@ import csv
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from reviews.models import App, Review
+
 User = get_user_model()
+
 
 def clean_val(v):
     if v is None:
         return ''
     s = str(v).strip()
-    if s.lower() in ('nan','none',''):
+    if s.lower() in ('nan', 'none', ''):
         return ''
     return s
 
+
 class Command(BaseCommand):
     help = 'Import reviews CSV'
+
     def add_arguments(self, parser):
         parser.add_argument('csvpath')
+
     def handle(self, *args, **options):
         path = options['csvpath']
         importer, _ = User.objects.get_or_create(username='importer', defaults={'is_active': True})

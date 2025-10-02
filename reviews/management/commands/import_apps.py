@@ -1,8 +1,7 @@
 import csv, re
 from django.core.management.base import BaseCommand
-from .models import App
 from decimal import Decimal
-from datetime import datetime
+from reviews.models import App
 
 
 def parse_installs(s):
