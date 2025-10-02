@@ -1,16 +1,103 @@
-AppReviews Django project.
+# AppReviews
 
-To run:
+A Django 5.x project for managing mobile app reviews with two roles:  
+- **Supervisors (staff users)** → approve/reject user-submitted reviews.  
+- **Normal users** → browse apps, search, and submit reviews (which go to supervisors for approval).  
+
+We use **SQLite** in development. (Apps & reviews are already imported in your provided DB.)
+
+---
+
+## 1. Setup
+
+Clone the project or unzip the provided archive.
+
+Create and activate a virtual environment:
+
+```bash
 python -m venv .venv
-source .venv/bin/activate   (or .venv\Scripts\activate on Windows)
-pip install django python-dateutil
+# On Linux/macOS
+source .venv/bin/activate
+# On Windows
+.venv\Scripts\activate
+
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+2. Database
+
+Database: SQLite (default db.sqlite3 in the project root).
+
+No extra setup needed.
+
+If starting from scratch:
+
 python manage.py migrate
-python manage.py createsuperuser
-python manage.py import_apps ./apps.csv
-python manage.py import_reviews ./reviews.csv
+
+3. User Roles
+
+Supervisor → any user with is_staff=True.
+Can see pending reviews and approve/reject them.
+
+Normal user → is_staff=False.
+Can submit reviews only; must be approved before publishing.
+
+4. Import Data
+Import Apps
+python manage.py import_apps ./resources/apps.csv
+
+Import Reviews
+python manage.py import_reviews ./resources/reviews.csv
+
+
+Imported reviews are marked as APPROVED by default (historical data).
+
+During import, reviews link to apps by name.
+
+If no supervisors exist, reviews may not be assigned to anyone.
+
+5. Run the Development Server
 python manage.py runserver
 
-Notes:
-- Timezone set to Asia/Kolkata
-- Supervisors: any user with is_staff=True
-- Suggest endpoint at /api/suggest/?q=...
+
+Visit: http://127.0.0.1:8000/
+
+6. Login Credentials
+
+A default superadmin is available:
+
+Username: superadmin
+
+Password: Passw0rd.
+
+Superadmin is also a supervisor (is_staff=True), so they will see the supervisor queue when logged in.
+
+7. Features
+
+Normal users:
+
+Home page shows most downloaded apps.
+
+Full-text search (with typeahead suggestions).
+
+App detail page with approved reviews.
+
+Submit new reviews (pending supervisor approval).
+
+Supervisors (staff):
+
+Home page shows pending reviews assigned to them.
+
+Approve or reject reviews.
+
+8. Notes
+
+Using django.contrib.auth login (/accounts/login/).
+
+Search suggestions work when typing 3+ characters.
+
+Review text only: sentiment fields are hidden from end users.
+
+User dropdown in navbar shows username, email, and role.
