@@ -22,7 +22,7 @@
     {% if user.is_authenticated %}
       <a href="{% url 'reviews:review_create' app.pk %}" class="btn btn-primary mb-3">Write Review</a>
     {% else %}
-      <p><a href="{% url 'admin:login' %}">Login</a> to submit a review.</p>
+      <p><a href="{% url 'login' %}?next={% url 'reviews:review_create' app.pk %}">Login</a> to submit a review.</p>
     {% endif %}
   </div>
 </div>
