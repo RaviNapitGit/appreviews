@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1 class="mb-4">Top Apps</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for app in apps %}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><a href="{% url 'reviews:app_detail' app.pk %}">{{ app.name }}</a></h5>
+          <p class="card-text">{{ app.category }} • {{ app.reviews_count }} reviews</p>
+        </div>
+        <div class="card-footer text-muted">
+          Rating: {{ app.rating|default:"N/A" }} • {{ app.installs|intcomma }} installs
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No apps yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

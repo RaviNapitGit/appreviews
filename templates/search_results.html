@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Search results for "{{ q }}"</h2>
+<div class="list-group">
+  {% for app in apps %}
+    <a href="{% url 'reviews:app_detail' app.pk %}" class="list-group-item list-group-item-action">
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ app.name }}</h5>
+        <small>{{ app.installs|intcomma }} installs</small>
+      </div>
+      <p class="mb-1">{{ app.category }} • Rating: {{ app.rating|default:"N/A" }}</p>
+    </a>
+  {% empty %}
+    <p>No results.</p>
+  {% endfor %}
+</div>
+{% endblock %}

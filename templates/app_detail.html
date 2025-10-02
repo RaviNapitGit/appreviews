@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}{{ app.name }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h2>{{ app.name }}</h2>
+    <p>{{ app.category }} • {{ app.genres }}</p>
+    <p>Rating: {{ app.rating|default:"N/A" }} • {{ app.installs|intcomma }} installs</p>
+    <hr>
+    <h4>Approved reviews</h4>
+    {% for r in reviews %}
+      <div class="mb-3">
+        <strong>{{ r.author.username }}</strong> <small class="text-muted">{{ r.approved_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+        <p>{{ r.text }}</p>
+      </div>
+    {% empty %}
+      <p>No approved reviews yet.</p>
+    {% endfor %}
+  </div>
+  <div class="col-md-4">
+    {% if user.is_authenticated %}
+      <a href="{% url 'reviews:review_create' app.pk %}" class="btn btn-primary mb-3">Write Review</a>
+    {% else %}
+      <p><a href="{% url 'admin:login' %}">Login</a> to submit a review.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

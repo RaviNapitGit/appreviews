@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Pending Reviews</h2>
+<table class="table">
+  <thead><tr><th>App</th><th>Author</th><th>Text</th><th>Actions</th></tr></thead>
+  <tbody>
+    {% for r in reviews %}
+      <tr>
+        <td><a href="{% url 'reviews:app_detail' r.app.pk %}">{{ r.app.name }}</a></td>
+        <td>{{ r.author.username }}</td>
+        <td>{{ r.text|truncatechars:80 }}</td>
+        <td>
+          <form method="post" action="{% url 'reviews:approve_review' r.pk %}" style="display:inline">{% csrf_token %}<button class="btn btn-success btn-sm" type="submit">Approve</button></form>
+          <form method="post" action="{% url 'reviews:reject_review' r.pk %}" style="display:inline">{% csrf_token %}<button class="btn btn-danger btn-sm" type="submit">Reject</button></form>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No pending reviews.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

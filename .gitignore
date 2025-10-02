@@ -1,0 +1,12 @@
+# Django-specific files
+*.log
+*.pyc
+
+__pycache__/
+db.sqlite3
+media/
+static/
+
+
+# IDE-specific files (e.g., PyCharm)
+.idea/
