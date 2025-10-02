@@ -1,24 +1,27 @@
 import csv, re
 from django.core.management.base import BaseCommand
-from reviews.models import App
+from .models import App
 from decimal import Decimal
 from datetime import datetime
+
 
 def parse_installs(s):
     if s is None:
         return 0
     s = s.strip()
-    s = s.replace('+','').replace(',','')
+    s = s.replace('+', '').replace(',', '')
     try:
         return int(s)
     except:
         return 0
+
 
 def parse_price(p):
     try:
         return Decimal(str(p))
     except:
         return Decimal('0')
+
 
 def parse_date(s):
     if not s:
@@ -29,10 +32,13 @@ def parse_date(s):
     except Exception:
         return None
 
+
 class Command(BaseCommand):
     help = 'Import apps from CSV'
+
     def add_arguments(self, parser):
         parser.add_argument('csvpath')
+
     def handle(self, *args, **options):
         path = options['csvpath']
         count = 0

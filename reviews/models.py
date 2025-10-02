@@ -4,8 +4,9 @@ from django.utils import timezone
 
 User = get_user_model()
 
+
 class App(models.Model):
-    APP_TYPE_CHOICES = [('Free','Free'),('Paid','Paid')]
+    APP_TYPE_CHOICES = [('Free', 'Free'), ('Paid', 'Paid')]
 
     name = models.CharField(max_length=255, unique=True, db_index=True)
     category = models.CharField(max_length=128)
@@ -24,9 +25,10 @@ class App(models.Model):
     def __str__(self):
         return self.name
 
+
 class Review(models.Model):
-    SENTIMENT_CHOICES = [('Positive','Positive'),('Neutral','Neutral'),('Negative','Negative')]
-    STATUS_CHOICES = [('PENDING','PENDING'),('APPROVED','APPROVED'),('REJECTED','REJECTED')]
+    SENTIMENT_CHOICES = [('Positive', 'Positive'), ('Neutral', 'Neutral'), ('Negative', 'Negative')]
+    STATUS_CHOICES = [('PENDING', 'PENDING'), ('APPROVED', 'APPROVED'), ('REJECTED', 'REJECTED')]
 
     app = models.ForeignKey(App, on_delete=models.CASCADE, related_name='reviews')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
@@ -48,6 +50,7 @@ class Review(models.Model):
         self.approved_at = timezone.now()
         self.supervisor = supervisor_user
         self.save()
+
 
 # Simple key-value to persist last assigned supervisor for round-robin
 class KeyValue(models.Model):
